@@ -1,69 +1,65 @@
-# Digital-dice-using-arduino
+# 🎲 Arduino Digital Dice
 
+> Roll the dice, but make it ✨microcontroller-powered✨.
 
+This is a simple Arduino project that simulates a digital dice using a push button and a 7-segment display. When the button is pressed, a random number between 1 and 6 appears on the display – no physical dice needed!
 
+---
 
-//Created by Sk_ElectroTech
-//By siddhu
-//for any issue email (siddhu200410@gmail.com)
-// Segment pins: A to G
-const int segmentPins[7] = {2, 3, 4, 5, 6, 7, 8};  
-const int buttonPin = 9;
+## 🧠 Features
 
-// Digits 1 to 6 (only)
-// Segment order: A B C D E F G
-int diceDigits[6][7] = {
-  {0, 1, 1, 0, 0, 0, 0}, // 1
-  {1, 1, 0, 1, 1, 0, 1}, // 2
-  {1, 1, 1, 1, 0, 0, 1}, // 3
-  {0, 1, 1, 0, 0, 1, 1}, // 4
-  {1, 0, 1, 1, 0, 1, 1}, // 5
-  {1, 0, 1, 1, 1, 1, 1}  // 6
-};
+- Random number generation (1–6)
+- Real-time display on 7-segment
+- Button-triggered roll
+- Compact and breadboard-friendly
+- Great for beginners and classroom demos!
 
-void setup() {
-  for (int i = 0; i < 7; i++) {
-    pinMode(segmentPins[i], OUTPUT);
-    digitalWrite(segmentPins[i], LOW);
-  }
-  pinMode(buttonPin, INPUT_PULLUP);
-  randomSeed(analogRead(A0));
-}
+---
 
-void loop() {
-  if (digitalRead(buttonPin) == LOW) {
-    // Rolling effect
-    for (int i = 0; i < 20; i++) {
-      int rollingNum = random(1, 7);
-      displayDigit(rollingNum);
-      delay(50); // speed of roll
-    }
+## 🛠️ Hardware Requirements
 
-    // Final number
-    int finalNum = random(1, 7);
+- Arduino Uno (or any compatible board)
+- 1x Common Cathode 7-Segment Display
+- 1x Push Button
+- 1x 10kΩ Resistor (pull-down for the button)
+- Jumper wires
+- Breadboard
+- USB Cable + Arduino IDE
 
-    // Blink effect for final number
-    for (int i = 0; i < 5; i++) {
-      displayDigit(finalNum);
-      delay(200);
-      clearDisplay();         // turn off all segments
-      delay(200);
-    }
+---
 
-    displayDigit(finalNum);   // leave final number showing
-    delay(500);               // wait before next roll
-  }
-}
+## ⚡ Circuit Connections
 
-void displayDigit(int number) {
-  int *segments = diceDigits[number - 1];
-  for (int i = 0; i < 7; i++) {
-    digitalWrite(segmentPins[i], segments[i]);
-  }
-}
+| 7-Segment Pin | Segment | Arduino Pin |
+|---------------|---------|-------------|
+| a             | Top     | 2           |
+| b             | Top-right | 3         |
+| c             | Bottom-right | 4     |
+| d             | Bottom | 5           |
+| e             | Bottom-left | 6      |
+| f             | Top-left | 7          |
+| g             | Center  | 8           |
+| COM (Common Cathode) | GND | GND       |
 
-void clearDisplay() {
-  for (int i = 0; i < 7; i++) {
-    digitalWrite(segmentPins[i], LOW);
-  }
-}
+**Button Connection:**
+
+- One side → Pin 9  
+- Other side → GND  
+- Pull-down resistor (10kΩ) between Pin 9 and GND
+
+---
+
+## 💻 Arduino Code
+
+> Check the `code/digital_dice.ino` file in this repo for the full source code.
+
+Basic logic:
+1. Wait for button press.
+2. Generate random number using `random(1, 7)`.
+3. Light up segments to match the number.
+4. Repeat on next press.
+
+---
+
+## 📂 Folder Structure
+
